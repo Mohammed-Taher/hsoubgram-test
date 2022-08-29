@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .card {
+        @apply flex flex-col bg-white my-4 rounded-xl border border-gray-200;
+    }
+
+    .card-header {
+        @apply flex flex-row items-center p-5;
+    }
+
+    .card-body {
+    }
+
+    .card-footer {
+        @apply border-t border-t-gray-200 p-3 mt-5;
+    }
+}
+
+@layer utilities {
+    .square {
+        aspect-ratio: 2 / 1;
+    }
+
+    input[type="file"]::-webkit-file-upload-button,
+    input[type="file"]::file-selector-button {
+        @apply text-white bg-gray-700 hover:bg-gray-600 font-medium text-sm cursor-pointer border-0 py-2.5 pl-8 pr-4;
+        margin-inline-start: -1rem;
+        margin-inline-end: 1rem;
+    }
+}
