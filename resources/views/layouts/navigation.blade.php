@@ -38,19 +38,10 @@
                         <a href="{{ route('create_post') }}">
                             {!! (url()->current() == route('create_post')) ? '<i class="bx bxs-message-square-add"></i>' : '<i class="bx bx-message-square-add"></i>' !!}
                         </a>
-                        {{--                        <a class="relative" href="{{ route('user_profile', ['user' => auth()->user()->username] ) }}">--}}
-                        {{--                            <i class="bx bxs-inbox"></i>--}}
-                        {{--                            @if (auth()->user()->pendingFollowers()->count() > 0)--}}
-                        {{--                                <span--}}
-                        {{--                                    class="bg-red-500 text-white rounded-full text-xs absolute w-5 h-5 p-0.5 text-center bottom-5 left-4">--}}
-                        {{--                                    {{auth()->user()->pendingFollowers()->count()}}--}}
-                        {{--                                </span>--}}
-                        {{--                            @endif--}}
-                        {{--                        </a>--}}
                     </div>
 
 
-                    <x-dropdown align="right" width="96">
+                    <x-dropdown align="right" width="96" trigger_type="click">
                         <x-slot name="trigger">
                             <button class="space-x-3 text-[1.6rem] mr-2 mt-1 leading-5">
                                 <div class="relative">
@@ -66,7 +57,7 @@
                     </x-dropdown>
                     <!-- Navigation Links -->
 
-                    <x-dropdown align="right" width="48">
+                    <x-dropdown align="right" width="48" trigger_type="click">
                         <x-slot name="trigger">
                             <button
                                 class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">

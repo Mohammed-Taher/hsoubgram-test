@@ -1,4 +1,4 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white', 'trigger_type' => 'click'])
+@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white', 'trigger_type' => ''])
 
 @php
     switch ($align) {
@@ -8,8 +8,6 @@
         case 'top':
             $alignmentClasses = 'origin-top';
             break;
-        case 'bottom':
-            $alignmentClasses = 'origin-bottom';
         case 'right':
         default:
             $alignmentClasses = 'origin-top-right right-0';
@@ -29,13 +27,12 @@
 @endphp
 
 <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-
     @if ($trigger_type == 'click')
         <div @click="open = ! open">
             @else
                 <div @keydown="open = true">
-                    {{ $trigger }}
                     @endif
+                    {{ $trigger }}
                 </div>
 
                 <div x-show="open"

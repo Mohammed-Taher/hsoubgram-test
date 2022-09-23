@@ -12,7 +12,7 @@
         <x-slot name="content" class="overflow-y-auto max-h-48">
             @if ($results)
                 @foreach ($results as $user)
-                    <ul class="">
+                    <ul>
                         @livewire('users-list-item', ['userId' => $user['id'], 'type' => 'search'], key('user'.$user['id']))
                     </ul>
                 @endforeach
