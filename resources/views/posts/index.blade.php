@@ -48,6 +48,9 @@
                                 <a href="/{{ $suggestedUser->username }}">
                                     {{ $suggestedUser->username }}
                                 </a>
+                                @if (auth()->user()->is_follower($suggestedUser))
+                                    <span class="text-xs text-gray-500">Follower</span>
+                                @endif
                             </div>
                             <div class="text-gray-500 text-sm">{{ $suggestedUser->name }}</div>
                         </div>

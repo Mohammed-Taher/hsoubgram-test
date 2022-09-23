@@ -52,14 +52,14 @@
                                 <div>
                                     <div class="flex items-start">
                                         <div class="flex items-center h-5">
-                                            <input id="private" name="private"
+                                            <input id="private_account" name="private_account"
                                                    type="checkbox"
                                                    class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                                 {{ $user->private_account ? 'checked': '' }}
                                             >
                                         </div>
                                         <div class="ml-3 text-sm">
-                                            <label for="private"
+                                            <label for="private_account"
                                                    class="font-medium text-gray-700">{{_('Private Account')}}</label>
                                         </div>
                                     </div>

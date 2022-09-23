@@ -37,7 +37,9 @@ Route::controller(PostController::class)->middleware('auth')->group(function () 
 
 Route::post('/p/{post}/comment', [CommentController::class, 'store'])->name('store_comment');
 Route::get('/p/{post:slug}/like', LikeController::class);
-Route::post('/toggle_follow', [FollowController::class, 'toggle'])->name('toggle_follow');
+
+Route::post('/toggle_follow', [FollowController::class, 'toggle_follow'])->name('toggle_follow');
+Route::post('/{user:username}/confirm', [FollowController::class, 'confirm'])->name('confirm_follow');
 
 Route::controller(UserController::class)->middleware('auth')->group(function () {
     Route::get('/{user:username}', [UserController::class, 'index'])->name('user_profile');

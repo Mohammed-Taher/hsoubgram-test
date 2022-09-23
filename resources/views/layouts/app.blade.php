@@ -16,7 +16,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/@picmo/popup-picker@latest/dist/umd/picmo-popup.js"></script>
 </head>
 
 <body class="font-sans antialiased bg-neutral-50 pb-10">
@@ -29,7 +28,7 @@
         {{ $slot }}
     </main>
 </div>
-
+@livewire('livewire-ui-modal')
 @livewireScripts
 </body>
 

@@ -15,12 +15,9 @@
 
             <!-- Search -->
             <div class="hidden sm:flex sm:items-center">
-                <form action="/search">
-                    <input type="text" name="search"
-                           class="w-56 lg:w-72 border-none bg-gray-100 rounded-xl h-10 focus:ring-0"
-                           placeholder="Search.."/>
-                </form>
+                @livewire('search')
             </div>
+
             <!-- Settings Dropdown -->
             @guest()
                 <div class="flex items-center space-x-3">
@@ -41,8 +38,34 @@
                         <a href="{{ route('create_post') }}">
                             {!! (url()->current() == route('create_post')) ? '<i class="bx bxs-message-square-add"></i>' : '<i class="bx bx-message-square-add"></i>' !!}
                         </a>
+                        {{--                        <a class="relative" href="{{ route('user_profile', ['user' => auth()->user()->username] ) }}">--}}
+                        {{--                            <i class="bx bxs-inbox"></i>--}}
+                        {{--                            @if (auth()->user()->pendingFollowers()->count() > 0)--}}
+                        {{--                                <span--}}
+                        {{--                                    class="bg-red-500 text-white rounded-full text-xs absolute w-5 h-5 p-0.5 text-center bottom-5 left-4">--}}
+                        {{--                                    {{auth()->user()->pendingFollowers()->count()}}--}}
+                        {{--                                </span>--}}
+                        {{--                            @endif--}}
+                        {{--                        </a>--}}
                     </div>
+
+
+                    <x-dropdown align="right" width="96">
+                        <x-slot name="trigger">
+                            <button class="space-x-3 text-[1.6rem] mr-2 mt-1 leading-5">
+                                <div class="relative">
+                                    <i class="bx bxs-inbox"></i>
+                                    @livewire('pending-requests-count')
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            @livewire('pending-requests-list', ['pending_users_list' => auth()->user()->pendingFollowers])
+                        </x-slot>
+                    </x-dropdown>
                     <!-- Navigation Links -->
+
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button

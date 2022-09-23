@@ -17,9 +17,11 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $name = fake()->name();
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'username' => fake()->userName(),
+            'image' => 'https://ui-avatars.com/api/?name=' . urlencode($name),
             'bio' => fake()->sentence(),
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),

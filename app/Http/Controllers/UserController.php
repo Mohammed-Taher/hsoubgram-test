@@ -32,6 +32,8 @@ class UserController extends Controller
             $data['image'] = '/' . $path;
         }
 
+        $data['private_account'] = $request->has('private_account');
+
         $user->update($data);
         return redirect()->route('user_profile', $user);
     }

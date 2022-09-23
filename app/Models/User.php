@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -25,7 +26,8 @@ class User extends Authenticatable
         'bio',
         'email',
         'password',
-        'image'
+        'image',
+        'private_account'
     ];
 
     /**
@@ -34,8 +36,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'created_at',
+        'updated_at',
         'password',
         'remember_token',
+        'email_verified_at',
+        'private_account',
     ];
 
     /**
@@ -60,17 +66,33 @@ class User extends Authenticatable
 
     public function following()
     {
-        return $this->belongsToMany(User::class, 'follows', 'user_id', 'following_user_id');
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'following_user_id')
+            ->wherePivot('confirmed', '=', true);
     }
 
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'user_id');
+        return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'user_id')->where('confirmed', '=', true);
     }
 
-    public function toggle(User $user)
+    public function confirmedFollowers()
     {
-        return $this->following()->toggle($user);
+        return $this->followers()->wherePivot('confirmed', '=', 1);
+    }
+
+    public function pendingFollowers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'user_id')->where('confirmed', '=', false);
+    }
+
+    public function toggle_follow(User $user)
+    {
+        if ($user->private_account) {
+            return $this->following()->toggle($user);
+        }
+        $this->following()->toggle($user);
+        $this->set_confirmed($user);
+
     }
 
     public function is_following(User $user)
@@ -78,5 +100,33 @@ class User extends Authenticatable
         return $this->following()->where('following_user_id', $user->id)->exists();
     }
 
+    public function is_follower(User $user)
+    {
+        return $this->followers()->where('user_id', $user->id)->exists();
+    }
 
+    public function confirm_follow_request(User $user)
+    {
+        return $this->followers()->updateExistingPivot($user, ['confirmed' => true]);
+    }
+
+    public function delete_follow_request(User $user)
+    {
+        return $this->followers()->detach($user);
+    }
+
+    public function set_confirmed(User $user)
+    {
+        if (!$user->private_account) {
+            DB::table('follows')
+                ->where('user_id', $this->id)
+                ->where('following_user_id', $user->id)
+                ->update([
+                    'confirmed' => 1
+                ]);
+        }
+        return true;
+    }
+
+    
 }

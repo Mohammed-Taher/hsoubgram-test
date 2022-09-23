@@ -7,7 +7,7 @@
                 @csrf
                 <input type="hidden" name="user_id" value="{{$post->owner->id}}">
                 <button type="submit"
-                        class="ml-5 p-1 font-bold text-blue-500 text-sm">{{ auth()->user()->is_following($post->owner) ? "Unfollow" : "Follow" }}</button>
+                        class="ml-5 p-1 font-bold text-blue-500 text-sm">{{ auth()->user()->is_following($post->owner) ? __("Unfollow") : __("Follow") }}</button>
             </form>
         @endif
     </div>

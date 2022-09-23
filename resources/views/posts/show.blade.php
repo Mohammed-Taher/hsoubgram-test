@@ -93,19 +93,24 @@
         </div>
     </div>
 
-    <div class="my-10 border-t border-t-2 ">
-        <h3 class="text-gray-500 pt-5">{{_('More posts from')}} <a
-                class="text-black font-bold"
-                href="/{{$post->owner->username}}">{{ $post->owner->username }}</a></h3>
+    @if($post->owner->id != auth()->id())
+        <div class="my-10 border-t border-t-2 ">
+            <h3 class="text-gray-500 pt-5">{{_('More posts from')}}
+                <a
+                    class="text-black font-bold"
+                    href="/{{$post->owner->username}}">{{ $post->owner->username }}
+                </a>
+            </h3>
 
-        <div class="grid grid-cols-3 gap-1 md:gap-5 mt-8">
-            @foreach ($more_posts as $post)
-                <div>
-                    <a href="/p/{{ $post->slug }}">
-                        <img class="w-full aspect-square object-cover" src="/posts/{{ $post->image }}">
-                    </a>
-                </div>
-            @endforeach
+            <div class="grid grid-cols-3 gap-1 md:gap-5 mt-8">
+                @foreach ($more_posts as $post)
+                    <div>
+                        <a href="/p/{{ $post->slug }}">
+                            <img class="w-full aspect-square object-cover" src="/posts/{{ $post->image }}">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 </x-app-layout>
