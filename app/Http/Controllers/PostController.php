@@ -34,7 +34,14 @@ class PostController extends Controller
 
     public function explore()
     {
-        $posts = Post::whereNot('user_id', auth()->id())->get();
+        $users = User::where('private_account', false)->whereNot('id', auth()->id())->get();
+        $posts = collect([]);
+        foreach ($users as $user) {
+            foreach ($user->posts as $post) {
+                $posts->add($post);
+            }
+        }
+
         return view('posts.explore', compact('posts'));
     }
 
@@ -72,13 +79,14 @@ class PostController extends Controller
         $path = Storage::putFile('temp', request()->file('image'));
 
         // Add the uploaded file path to $data array
-        $data['image'] = $path;
+        $data['image'] = basename($path);
         // Add the basename of the uploaded image to $data array
-        $data['basename'] = basename($path);
+//        $data['basename'] = basename($path);
         // create a unique slug
         $data['slug'] = Str::random(10);
         // add the user id
         $data['user_id'] = auth()->id();
+
 
         // Add $data to the current session
         if (empty(request()->session()->get('data'))) {
