@@ -13,26 +13,43 @@
     </div>
     <div class="card-body">
         <img class="aspect-square" src="/posts/{{ $post->image }}"/>
-        <div class="flex flex-row p-4">
-            <a href="/p/{{$post->slug}}/like">
-                @if ($post->liked(auth()->user()))
-                    <i class="bx bxs-heart text-red-600 text-3xl hover:text-gray-400 cursor-pointer mr-3"></i>
-                @else
-                    <i class="bx bx-heart text-3xl hover:text-gray-400 cursor-pointer mr-3"></i>
-                @endif
-            </a>
+        <div class="flex flex-row p-3">
+            <livewire:like :post="$post"/>
             <a class="grow" href="/p/{{$post->slug}}"><i
                     class="bx bx-comment text-3xl hover:text-gray-400 cursor-pointer mr-3"></i></a>
         </div>
-        <div class="p-3 mt-3">
+
+        <div class="px-3">
+            @if ($liked_by_users_count > 0)
+                <a class="font-bold" href="/{{ $first_liked_user->username }}">
+                    <image class="inline-block w-5 mr-2 rounded-full" src="{{ $first_liked_user->image }}">
+                </a>
+                <span>{{__('Liked By ')}}</span>
+                <a class="font-bold" href="/{{ $first_liked_user->username }}">
+                    {{ $first_liked_user->username }}
+                </a>
+                @if ($liked_by_users_count > 1)
+                    and <span class="font-bold">others</span>
+                @endif
+            @endif
+        </div>
+        <div class="p-3">
             <a class="font-bold mr-1"
                href="/{{$post->owner->id}}">{{$post->owner->username}}</a>
             {{ $post->description }}
         </div>
         @if ($post->comments()->count() > 0)
-            <div class="p-3 mt-3">
-                <a href="/p/{{$post->slug}}">View all {{ $post->comments()->count() }} comments</a>
-            </div>
+            <a class="p-3 font-bold text-sm text-gray-500"
+               href="/p/{{$post->slug}}">{{__('View all '. $post->comments()->count() . ' comments')}}</a>
+            <ul>
+                @foreach($post->comments as $comment)
+                    <li class="p-3 py-0.5">
+                        <a class="font-bold mr-1"
+                           href="/{{$comment->owner->username }}">{{$comment->owner->username}}</a>
+                        {{ $comment->body }}
+                    </li>
+                @endforeach
+            </ul>
         @endif
         <div class="p-3 text-gray-400 uppercase text-xs">
             {{ $post->created_at->diffForHumans() }}

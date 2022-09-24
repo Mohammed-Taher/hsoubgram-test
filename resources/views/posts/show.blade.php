@@ -1,12 +1,12 @@
 <x-app-layout>
     <div class="h-screen md:flex md:flex-row">
         {{-- Left Side --}}
-        <div class="h-full md:w-8/12 bg-black flex items-center">
+        <div class="h-full md:w-7/12 bg-black flex items-center">
             <img class="max-h-screen object-cover mx-auto" src="/posts/{{ $post->image }}" alt="">
             <div class="contrast-125 brightness-125 mix-blend-overlay bg-gray-50 block absolute z-50"></div>
         </div>
         {{-- Right Side --}}
-        <div class="flex flex-col w-full md:w-4/12 bg-white">
+        <div class="flex flex-col w-full md:w-5/12 bg-white">
             {{-- Top --}}
             <div class="border-b border-b-2 ">
                 <div class="flex items-center p-5">
@@ -43,7 +43,7 @@
                                     {{ $comment->body }}
                                 </div>
                                 <div class="mt-1 text-sm text-gray-400 font-bold">
-                                    {{ $comment->created_at->diffForHumans() }}
+                                    {{ $comment->created_at->diffForHumans(null, true, true) }}
                                 </div>
                             </div>
                         </div>
@@ -53,20 +53,14 @@
             {{-- Likes and Actions --}}
             <div class="border-y border-y-2">
                 <div class="flex flex-row p-4">
-                    <a href="/p/{{$post->slug}}/like">
-                        @if ($post->liked(auth()->user()))
-                            <i class="bx bxs-heart text-red-600 text-3xl hover:text-gray-400 cursor-pointer mr-3"></i>
-                        @else
-                            <i class="bx bx-heart text-3xl hover:text-gray-400 cursor-pointer mr-3"></i>
-                        @endif
-                    </a>
+                    <livewire:like :post="$post"/>
                     <a class="grow" onclick="document.getElementById('comment_body').focus()">
                         <i class="bx bx-comment text-3xl hover:text-gray-400 cursor-pointer mr-3"></i>
                     </a>
                 </div>
                 <div class="px-5 mb-4">
                     @if ($users->count() > 0)
-                        Liked By
+                        {{__('Liked By')}}
                         <strong> <a href="/{{ $users->first()->username }}">{{ $users->first()->username }}</a>
                         </strong>
                         @if ($users->count() > 1)

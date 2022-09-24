@@ -7,6 +7,9 @@ use Illuminate\View\Component;
 class Post extends Component
 {
     public $post;
+    public $liked_by_users_count;
+    public $first_liked_user;
+
     /**
      * Create a new component instance.
      *
@@ -15,6 +18,8 @@ class Post extends Component
     public function __construct($post)
     {
         $this->post = $post;
+        $this->liked_by_users_count = $post->likes()->get()->count();
+        $this->first_liked_user = $post->likes()->get()->first();
     }
 
     /**

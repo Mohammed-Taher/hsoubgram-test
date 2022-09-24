@@ -77,12 +77,17 @@ class User extends Authenticatable
 
     public function confirmedFollowers()
     {
-        return $this->followers()->wherePivot('confirmed', '=', 1);
+        return $this->followers()->wherePivot('confirmed', '=', true);
     }
 
     public function pendingFollowers()
     {
         return $this->belongsToMany(User::class, 'follows', 'following_user_id', 'user_id')->where('confirmed', '=', false);
+    }
+
+    public function is_a_pending_following(User $user)
+    {
+        return DB::table('follows')->where('following_user_id', $user->id)->where('confirmed', '=', false)->exists();
     }
 
     public function toggle_follow(User $user)
@@ -128,5 +133,10 @@ class User extends Authenticatable
         return true;
     }
 
-    
+    public function suggested_users()
+    {
+        return User::whereNot('id', auth()->id())->get()->diff(auth()->user()->following)->shuffle()->take(5);
+    }
+
+
 }

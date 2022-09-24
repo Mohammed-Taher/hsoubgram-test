@@ -24,11 +24,7 @@ class PostController extends Controller
     {
         $ids = auth()->user()->following()->get()->pluck('id');
         $posts = Post::whereIn('user_id', $ids)->latest()->get();
-        $suggestedUsers = User::whereNotIn('id', $ids)
-            ->whereNot('id', auth()->id())
-            ->latest()
-            ->get()
-            ->take(5);
+        $suggestedUsers = auth()->user()->suggested_users();
         return view('posts.index', compact(['posts', 'suggestedUsers']));
     }
 

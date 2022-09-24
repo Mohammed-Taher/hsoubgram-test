@@ -14,6 +14,7 @@
                     @else
                         <form action="{{url('toggle_follow')}}" method="post">
                             @csrf
+                            <input type="hidden" name="user_id" value="{{$user->id}}">
                             <button type="submit"
                                     class="bg-blue-400 text-white px-3 py-1 rounded"
                             >{{ auth()->user()->is_following($user) ? __('Unfollow') : __('Follow') }}
